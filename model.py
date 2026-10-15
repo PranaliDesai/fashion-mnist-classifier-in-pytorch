@@ -44,8 +44,19 @@ def load_fashion_mnist(n_train=10000, n_test=2000):
         "y_test": torch.from_numpy(data["test_labels"][:n_test].astype(np.int64)),
     }
 
-# Step 2 - FashionDataset (not yet solved)
-# TODO: implement
+# Step 2 - FashionDataset
+class FashionDataset(Dataset):
+    def __init__(self, X, y, mean=0.2860, std=0.3530):
+        self.x = X
+        self.y = y
+        self.mean = mean
+        self.std = std
+
+    def __len__(self):
+        return len(self.x)
+
+    def __getitem__(self, i):
+        return ((self.x[i] - self.mean) / self.std, self.y[i])
 
 # Step 3 - make_loaders (not yet solved)
 # TODO: implement
