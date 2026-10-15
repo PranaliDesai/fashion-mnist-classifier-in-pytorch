@@ -112,8 +112,20 @@ def train_one_epoch(model, loader, loss_fn, optimizer):
         losses.append(loss.item())
     return sum(losses) / len(losses)
 
-# Step 6 - evaluate (not yet solved)
-# TODO: implement
+# Step 6 - evaluate
+def evaluate(model, loader, loss_fn):
+    model.eval()
+    total_loss = 0.0
+    correct = 0
+    n = 0
+    with torch.no_grad():
+        for xb, yb in loader:
+            logits = model(xb)
+            loss = loss_fn(logits, yb)
+            total_loss += loss.item() * xb.size(0)
+            correct += (logits.argmax(dim=1) == yb).sum().item()
+            n += xb.size(0)
+    return total_loss / n, correct / n
 
 # Step 7 - fit (not yet solved)
 # TODO: implement
