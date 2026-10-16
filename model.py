@@ -208,8 +208,10 @@ def random_search(loaders, n_trials=4, epochs=2, seed=42):
     best = max(trials, key=lambda t: t["val_acc"])
     return {"trials": trials, "best": best}
 
-# Step 10 - test_accuracy (not yet solved)
-# TODO: implement
+# Step 10 - test_accuracy
+def test_accuracy(model, loaders):
+    _, acc = evaluate(model, loaders["test"], nn.CrossEntropyLoss())
+    return acc
 
 # Step 11 - save_model (not yet solved)
 # TODO: implement
