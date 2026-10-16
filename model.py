@@ -157,8 +157,29 @@ def fit(model, loaders, epochs=5, lr=0.05, seed=42):
     history["best_epoch"] = best_epoch
     return history
 
-# Step 8 - lr_range_test (not yet solved)
-# TODO: implement
+# Step 8 - lr_range_test
+def lr_range_test(make_model, loader, lrs, n_batches=20, seed=42):
+    results = {}
+    for lr in lrs:
+        torch.manual_seed(seed)
+        model = make_model()
+        loss_fn = nn.CrossEntropyLoss()
+        optimizer = torch.optim.SGD(model.parameters(), lr=lr)
+
+        model.train()
+        losses = []
+        for i, (xb, yb) in enumerate(loader):
+            if i >= n_batches:
+                break
+            optimizer.zero_grad()
+            logits = model(xb)
+            loss = loss_fn(logits, yb)
+            loss.backward()
+            optimizer.step()
+            losses.append(loss.item())
+
+        results[lr] = sum(losses) / len(losses)
+    return results
 
 # Step 9 - random_search (not yet solved)
 # TODO: implement
